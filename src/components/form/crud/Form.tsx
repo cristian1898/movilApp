@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button, TextInput, Title } from 'react-native-paper';
 import { formInputs } from '../../../utils/const.form';
 import { Picker } from '@react-native-picker/picker';
-import { ValidFiles } from '../../../interfaces/globalInterface';
+import {
+  StaticsResponses,
+  ValidFiles,
+} from '../../../interfaces/globalInterface';
+import { useAppContext } from '../../../context/AppContext';
+import { AuthorInterface } from '../../../interfaces/author';
 
 interface FormData {
   [key: string]: string | number;
@@ -14,131 +19,128 @@ const Formulario = ({
   formData,
   onChange,
   onSubmit,
+  type,
 }: {
   formData: FormData | any;
   onChange: (field: string, value: string | number) => void;
   onSubmit: () => void;
+  type: string;
 }) => {
- 
+  const { state, dispatch } = useAppContext();
+  const [listAuthors, setListAuthors] = React.useState<
+    Partial<AuthorInterface>[]
+  >([]);
   const renderFormFields = (data: FormData) => {
     return Object.keys(data).map((field, index) => {
-        const opcionesAutor = ['Autor1', 'Autor2', 'Autor3']; // Puedes reemplazar con tus datos reales
-        const opcionesSelect = opcionesAutor.map((autor, i) => (
-          <Picker.Item key={i} label={autor} value={autor} />
-        ));
+      const opcionesSelect = listAuthors.map((autor, i) => (
+        <Picker.Item key={i} label={autor.name} value={autor.id} />
+      ));
 
       if (field !== ValidFiles.ID && field !== ValidFiles.CREATED) {
-        return (
-            field === ValidFiles.AUTHOR ? <View key={index} style={styles.inputContainer}>
+        return field === ValidFiles.AUTHOR ? (
+          <View key={index} style={styles.inputContainer}>
             <Text style={styles.label}>{field}</Text>
             <Picker
               selectedValue={data[field]}
               style={styles.picker}
-              onValueChange={(value) => onChange(field, value as string)}
-            >
+              onValueChange={value => onChange(field, value as string)}>
               {opcionesSelect}
             </Picker>
-          </View>:
+          </View>
+        ) : (
           <TextInput
             key={index}
             style={styles.input}
-            mode='outlined' 
-            label={ formInputs[field] }
+            mode="flat"
+            label={formInputs[field]}
             value={data[field] ? data[field].toString() : ''}
-            onChangeText={(text) => onChange(field, text)}
-          >
-     
-          </TextInput > 
-
-             );
+            onChangeText={text => onChange(field, text)}></TextInput>
+        );
       }
 
-      return null;     });
+      return null;
+    });
   };
-   const areAllFieldsFilled = () => {
-    
+  const areAllFieldsFilled = () => {
+    delete formData.createdAt;
     const requiredFields = Object.keys(formData).filter(
-      (field) => formData[field].toString().trim() === '' && field !== "id"
+      field => formData[field].toString().trim() === '' && field !== 'id',
     );
+
     return requiredFields.length === 0;
   };
-const handleSubmit = () => {
-
+  const handleSubmit = () => {
     if (areAllFieldsFilled()) {
- 
       onSubmit();
     } else {
-    
-      console.log('Por favor, complete todos los campos obligatorios.');
+      dispatch({
+        type: 'SET_ALERT',
+        payload: { action: 'error', message: StaticsResponses.ERROR_FORM },
+      });
     }
   };
+
+  useEffect(() => {
+    state.listAuthors && setListAuthors(state.listAuthors);
+  }, [state.listAuthors]);
   return (
-      <ScrollView contentContainerStyle={styles.scrollContainer} nestedScrollEnabled={false}  >
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      nestedScrollEnabled={false}>
       <View style={styles.formContainer}>
-      <Title style={styles.titleText}>
-      {
-      formData.id ? 'Actualizar' : 'Crear'
-      }
-
-      </Title>
+        <Title style={styles.titleText}>
+          {formData.id ? `Actualizar el ${type}` : `Crear un nuevo ${type}`}
+        </Title>
         {renderFormFields(formData)}
-  
-        <Button mode="contained" onPress={handleSubmit} style={styles.button} >
-         {
-      formData.id ? 'Enviar' : 'Guardar'
-      }
-        </Button>
 
-   
+        <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+          {formData.id ? 'Enviar' : 'Guardar'}
+        </Button>
       </View>
-   </ScrollView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-scrollContainer: {
+  scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
   },
   formContainer: {
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 16,
+    padding: 8,
     elevation: 3,
-
- 
   },
   input: {
-     height: 40,
-    
-    borderColor: '#ddd',
+    height: 50,
+    backgroundColor: '#ffffff',
     borderRadius: 5,
     marginBottom: 10,
-    paddingHorizontal: 10,
-
+    padding: 10,
+    paddingHorizontal: 0,
   },
   button: {
     marginTop: 16,
-    background:'#000',
-  height: 50, 
+    background: '#000',
+    height: 50,
   },
   titleText: {
     fontSize: 24,
-    marginBottom: 10
+    marginBottom: 10,
   },
-    picker: {
+  picker: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
   },
-   inputContainer: {
+  inputContainer: {
     marginBottom: 16,
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5,
     paddingHorizontal: 8,
     paddingVertical: 4,
-
   },
   label: {
     marginBottom: 8,
@@ -146,4 +148,3 @@ scrollContainer: {
 });
 
 export default Formulario;
-

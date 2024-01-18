@@ -3,26 +3,34 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 
 import { ItemModalInfo } from '../../../interfaces/tableInterface';
-import ModalDeatilComponent from '../../modal/Modal';
+import ModalDetailComponent from '../../modal/Modal';
+import { AuthorInterface } from '../../../interfaces/author';
+import { BookInterface } from '../../../interfaces/book';
+import { StaticsResponses } from '../../../interfaces/globalInterface';
 
 const ItemTableComponent = ({
   filteredData,
   column,
+  type,
 }: {
-  filteredData: ItemModalInfo[];
+  filteredData: AuthorInterface[] | BookInterface[];
   column: ItemModalInfo[];
+  type: string;
 }) => {
+  const image = StaticsResponses.IMG;
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<ItemModalInfo | null>(null);
+  const [selectedItem, setSelectedItem] = useState<
+    AuthorInterface | BookInterface
+  >();
 
-  const handlePreviewClick = (item: ItemModalInfo) => {
+  const handlePreviewClick = (item: AuthorInterface | BookInterface) => {
     setSelectedItem(item);
     setPreviewVisible(true);
   };
 
   const closePreview = () => {
     setPreviewVisible(false);
-    setSelectedItem(null);
+    setSelectedItem(undefined);
   };
 
   return (
@@ -58,7 +66,9 @@ const ItemTableComponent = ({
                     ) : (
                       <View style={styles.imageContainer}>
                         <Image
-                          source={require('../../../../assets/images/pizza_portuguesa.jpg')}
+                          source={{
+                            uri: item?.img ? item.img : image,
+                          }}
                           style={styles.icon}
                         />
                       </View>
@@ -70,12 +80,16 @@ const ItemTableComponent = ({
             : null}
         </ScrollView>
       </View>
-      <ModalDeatilComponent
-        closePreview={closePreview}
-        previewVisible={previewVisible}
-        item={selectedItem}
-        listValues={column}
-      />
+      {/* Modal preview  */}
+      {selectedItem ? (
+        <ModalDetailComponent
+          closePreview={closePreview}
+          previewVisible={previewVisible}
+          item={selectedItem}
+          listValues={column}
+          type={type}
+        />
+      ) : null}
     </View>
   );
 };

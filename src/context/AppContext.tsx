@@ -6,38 +6,53 @@ import React, {
   Dispatch,
 } from 'react';
 import {
+  IAppContextActionView,
   IAppContextAlert,
   IAppContextFilter,
 } from '../interfaces/globalInterface';
+import { AuthorInterface } from '../interfaces/author';
+import { BookInterface } from '../interfaces/book';
 
-// Definir el tipo para el estado
+// State type
 type AppState = {
-  // Define las propiedades de tu estado aquí
+  // Properties
   // Ejemplo:
   alert: IAppContextAlert | null;
   filter: IAppContextFilter | null;
+  view: IAppContextActionView | null;
+  author: AuthorInterface | null;
+  listAuthors: Partial<AuthorInterface>[] | null;
+  book: BookInterface | null;
 };
 
-// Definir las acciones disponibles
+// Type of actions
 export type AppAction =
   | { type: 'SET_ALERT'; payload: IAppContextAlert }
+  | { type: 'SET_VIEW'; payload: IAppContextActionView }
+  | { type: 'SET_AUTHOR'; payload: AuthorInterface }
+  | { type: 'SET_LIST_AUTHORS'; payload: Partial<AuthorInterface>[] }
+  | { type: 'SET_BOOK'; payload: BookInterface }
   | { type: 'SET_FILTER'; payload: IAppContextFilter };
 
-// Definir el tipo del contexto
+// Type of context
 type AppContextType = {
   state: AppState;
   dispatch: Dispatch<AppAction>;
 };
 
-// Crear el contexto inicializado con un objeto vacío
+// Create context inital
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Definir el proveedor del contexto
+// Provider definition
 type AppContextProviderProps = { children: ReactNode };
 
 const initialState: AppState = {
   alert: null,
   filter: null,
+  view: null,
+  author: null,
+  book: null,
+  listAuthors: null,
 };
 
 const appReducer = (state: AppState, act: AppAction): AppState => {
@@ -49,9 +64,23 @@ const appReducer = (state: AppState, act: AppAction): AppState => {
         ...state,
         alert: { action, message },
       };
+    case 'SET_VIEW':
+      const value = act.payload;
+      return { ...state, view: { ...value } };
+
     case 'SET_FILTER':
       const { author, id } = act.payload;
       return { ...state, filter: { author, id } };
+    case 'SET_AUTHOR':
+      const authorInfo = act.payload;
+      return { ...state, author: { ...authorInfo } };
+    case 'SET_LIST_AUTHORS':
+      const authorList = act.payload;
+      return { ...state, listAuthors: authorList };
+    case 'SET_BOOK':
+      const bookInfo = act.payload;
+      return { ...state, book: { ...bookInfo } };
+
     default:
       return state;
   }
@@ -67,7 +96,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
   );
 };
 
-// Crear un hook personalizado para acceder al contexto
+// Hook context for components
 const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {

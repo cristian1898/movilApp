@@ -1,17 +1,20 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useAppContext } from '../../context/AppContext';
 import { AuthorInterface } from '../../interfaces/author';
 import { BookInterface } from '../../interfaces/book';
 import { ItemModalInfo } from '../../interfaces/tableInterface';
+import Loader from '../../loader/Loader';
 import HttpService from '../../services/http/service';
 import { searchField } from '../../utils/filter';
 import ChipHistory from './history/Chip';
 import ItemTableComponent from './item/Item';
 import styles from './styles';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ACTIONS } from '../../interfaces/globalInterface';
 
-const Table: React.FC<{
+const InitialComponentAppTable: React.FC<{
   filter: ItemModalInfo;
   column: ItemModalInfo[];
   url: string;
@@ -21,6 +24,7 @@ const Table: React.FC<{
   const [filterColumn, setFilterColumn] = useState<string>('');
   const [filterValue, setFilterValue] = useState<string>('');
   const [listHistory, setListHistory] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [dataList, setDataList] = useState<BookInterface[] | AuthorInterface[]>(
     [],
   );
@@ -36,16 +40,34 @@ const Table: React.FC<{
 
   const getData = async () => {
     const result = await HttpService.listData(url, dispatch);
-    if (result) setDataList(result.details?.list || []);
-
-    console.log(result);
+    if (result) {
+      const { details } = result;
+      details.listAuthors &&
+        dispatch({
+          type: 'SET_LIST_AUTHORS',
+          payload: details.listAuthors,
+        });
+      setDataList(details?.list || []);
+    }
+    setTimeout(() => {
+      if (result) setLoading(false);
+    }, 1000);
   };
   useEffect(() => {
+    setDataList([]);
     getData();
   }, []);
-
+  const handleAddNew = () => {
+    dispatch({
+      type: 'SET_VIEW',
+      payload: { type: ACTIONS.CREATE, url: url },
+    });
+  };
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.floatingButton} onPress={handleAddNew}>
+        <Icon name="add-circle-outline" size={50} color="#fff" />
+      </TouchableOpacity>
       {/* Barra de búsqueda */}
       <TextInput
         style={styles.input}
@@ -79,7 +101,16 @@ const Table: React.FC<{
         </Picker>
       </View>
       {/* Columnas de la tabla  */}
-      <ItemTableComponent filteredData={filteredData} column={column} />
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <ItemTableComponent
+          filteredData={filteredData}
+          column={column}
+          type={url}
+        />
+      )}
 
       {/* Chips history filter  */}
 
@@ -88,4 +119,4 @@ const Table: React.FC<{
   );
 };
 
-export default Table;
+export default InitialComponentAppTable;

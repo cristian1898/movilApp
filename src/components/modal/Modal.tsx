@@ -6,27 +6,44 @@ import { BookInterface } from '../../interfaces/book';
 import { AuthorInterface } from '../../interfaces/author';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAppContext } from '../../context/AppContext';
-const ModalDeatilComponent = ({
+import { ACTIONS, ValidPrintForm } from '../../interfaces/globalInterface';
+const ModalDetailComponent = ({
   closePreview,
   previewVisible,
   item,
   listValues,
+  type,
 }: {
   closePreview: any;
   previewVisible: boolean;
   item: AuthorInterface | BookInterface;
   listValues: ItemModalInfo[];
+  type?: string;
 }) => {
   const { dispatch } = useAppContext();
-  const handleDetailClick = (id: string) => {
-    console.log(id);
+  const handleDetailClick = (value: any) => {
+    if (type === ValidPrintForm.AUTHOR) {
+      dispatch({
+        type: 'SET_AUTHOR',
+        payload: { ...value },
+      });
+    } else {
+      dispatch({
+        type: 'SET_BOOK',
+        payload: { ...value },
+      });
+    }
+
+    dispatch({
+      type: 'SET_VIEW',
+      payload: { type: ACTIONS.VIEW },
+    });
   };
   function handleLinkPress() {
     dispatch({
       type: 'SET_ALERT',
       payload: { action: 'info', message: 'Link copiado al portapapeles' },
     });
-    console.log('Enlace presionado');
   }
   return (
     <Modal
@@ -69,7 +86,7 @@ const ModalDeatilComponent = ({
           <Divider style={styles.divider} />
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              onPress={() => handleDetailClick(item.id)}
+              onPress={() => handleDetailClick(item)}
               style={styles.detailButton}>
               <Button mode="text" style={styles.detailButtonText}>
                 Detalle
@@ -85,4 +102,4 @@ const ModalDeatilComponent = ({
   );
 };
 
-export default ModalDeatilComponent;
+export default ModalDetailComponent;

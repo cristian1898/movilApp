@@ -96,6 +96,32 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     color: '#720455',
   },
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#3C0753',
+    borderRadius: 8,
+    paddingVertical: 12,
+    marginTop: 16,
+  },
+  addButtonLabel: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 8,
+  },
+
+  floatingButton: {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+    backgroundColor: '#3B3486',
+    borderRadius: 50,
+    padding: 4,
+    elevation: 5,
+    zIndex: 100,
+  },
 });
 
 export default styles;

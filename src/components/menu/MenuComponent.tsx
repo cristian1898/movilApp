@@ -1,13 +1,8 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
-import {BottomNavigation} from 'react-native-paper';
+import { View, Text } from 'react-native';
+import { BottomNavigation } from 'react-native-paper';
 import AuthorView from '../../views/author';
-
-const BookRoute = () => (
-  <View>
-    <Text>Albums</Text>
-  </View>
-);
+import BookView from '../../views/book';
 
 const MenuComponent = () => {
   const [index, setIndex] = React.useState(0);
@@ -18,17 +13,22 @@ const MenuComponent = () => {
       focusedIcon: 'heart',
       unfocusedIcon: 'account-settings',
     },
-    {key: 'book', title: 'Libros', focusedIcon: 'book'},
+    {
+      key: 'book',
+      title: 'Libros',
+      focusedIcon: 'book',
+      unfocusedIcon: 'account-settings',
+    },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
     author: () => <AuthorView />,
-    book: BookRoute,
+    book: () => <BookView />,
   });
 
   return (
     <BottomNavigation
-      navigationState={{index, routes}}
+      navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
     />

@@ -1,19 +1,18 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 const { width, height } = Dimensions.get('screen');
 const styles = StyleSheet.create({
   containerForm: {
-     flexDirection: 'column',
+    flexDirection: 'column',
     marginBottom: 10,
     backgroundColor: '#fff',
     padding: 10,
     borderRadius: 5,
   },
   container: {
-  flexGrow: 1,
-  justifyContent: 'space-between', 
- 
+    flexGrow: 1,
+    justifyContent: 'space-between',
   },
-    input: {
+  input: {
     height: 40,
     borderWidth: 1,
     borderColor: '#ddd',
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 24,
-    marginBottom: 10
+    marginBottom: 10,
   },
 });
 

@@ -73,6 +73,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#720455',
   },
+
+  modalContainerDelete: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 8,
+    width: '90%',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });
 
 export default styles;

@@ -9,6 +9,7 @@ const handleErrors = async (
   data: ResponseMethod,
   dispatch: Dispatch<AppAction>,
   status?: number,
+  active?: boolean,
 ) => {
   if (!status || status >= 400) {
     dispatch({
@@ -17,11 +18,12 @@ const handleErrors = async (
     });
     return data;
   }
-
-  dispatch({
-    type: 'SET_ALERT',
-    payload: { action: 'success', message: data.message },
-  });
+  if (!active) {
+    dispatch({
+      type: 'SET_ALERT',
+      payload: { action: 'success', message: data.message },
+    });
+  }
 
   return data;
 };
@@ -35,20 +37,14 @@ const performCrudOperation = async <T>(
   try {
     const headers: AxiosRequestConfig<any> = {
       headers: {
-        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
       },
     };
     if (method === Method.GET) {
       const { data, status } = await axios.get(`${API_BASE_URL}/${url}`, headers);
-      console.log(
-        '---------[route => /Users/cristiancuray/MEGAsync/proyectos/personal/reactNative/movil/bookProyect/src/services/http/service.ts ]---------',
-      );
-      console.log(data);
-      console.log(`╭──────────────────────────────────────────────────────────╮
-                   │ End 01/17/24 - 02:28 Wednesday <== 🦉                     │
-                   ╰──────────────────────────────────────────────────────────╯`);
 
-      return await handleErrors(data, dispatch, status);
+      return await handleErrors(data, dispatch, status, true);
     }
     if (method === Method.POST) {
       const { data, status } = await axios.post(
@@ -56,7 +52,8 @@ const performCrudOperation = async <T>(
         info,
         headers,
       );
-      return await handleErrors(data, dispatch, status);
+
+      return await handleErrors({ ...data, status }, dispatch, status);
     }
     if (method === Method.PUT) {
       const { data, status } = await axios.put(
@@ -64,15 +61,26 @@ const performCrudOperation = async <T>(
         info,
         headers,
       );
-      return await handleErrors(data, dispatch, status);
+
+      return await handleErrors({ ...data, status }, dispatch, status);
     }
 
     if (method === Method.DELETE) {
-      const { data, status } = await axios.get(`${API_BASE_URL}/${url}`, headers);
-      return await handleErrors(data, dispatch, status);
+      const { data, status } = await axios.delete(
+        `${API_BASE_URL}${url}`,
+        headers,
+      );
+      return await handleErrors({ ...data, status }, dispatch, status);
     }
   } catch (error) {
-    console.error(`${error}`);
+    return await handleErrors(
+      {
+        status: 500,
+        message: 'Error email o name incorrectos / Internal Server Error',
+      },
+      dispatch,
+      500,
+    );
   }
 };
 
@@ -94,7 +102,7 @@ const createData = async <T>(
     dispatch,
     newData,
   );
-  console.log('Registro creado:', createdData);
+  return createdData;
 };
 
 const updateData = async <T>(
@@ -108,7 +116,7 @@ const updateData = async <T>(
     dispatch,
     updatedData,
   );
-  console.log('Registro actualizado:', updatedDataResponse);
+  return updatedDataResponse;
 };
 
 const deleteData = async (url: string, dispatch: Dispatch<AppAction>) => {
@@ -117,7 +125,7 @@ const deleteData = async (url: string, dispatch: Dispatch<AppAction>) => {
     Method.DELETE,
     dispatch,
   );
-  console.log('Registro eliminado:', deletedDataResponse);
+  return deletedDataResponse;
 };
 const HttpService = { deleteData, updateData, createData, listData, listOne };
 export default HttpService;

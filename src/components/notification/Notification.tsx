@@ -15,11 +15,14 @@ const NotificationComponentApp = () => {
   };
 
   const hideSnackbar = () => {
+    setAlerObject(null);
     setVisible(false);
   };
   useEffect(() => {
-    setAlerObject(state.alert);
-    showSnackbar();
+    if (state.alert) {
+      setAlerObject(state.alert);
+      showSnackbar();
+    }
   }, [state.alert]);
   return (
     <View style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>

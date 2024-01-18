@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   headerTitle: {
@@ -15,6 +15,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
 
     fontSize: 18,
+  },
+  goBackButton: {
+    marginRight: 8,
+
+    borderRadius: 50,
+    padding: 8,
   },
 });
 
