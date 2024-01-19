@@ -19,17 +19,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   contentContainer: {
-    padding: 16,
+    width: 300,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 14,
+    borderBottomWidth: 1,
+    paddingBottom: 5,
   },
   breadcrumbContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
+    width: 280,
   },
   breadcrumb: {
     width: 20,
@@ -44,6 +49,7 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginBottom: 16,
+    width: 280,
   },
   sectionTitle: {
     fontSize: 18,
@@ -53,6 +59,8 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     color: '#555',
   },
   details: {

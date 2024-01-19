@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 
 const AuthorView = () => {
   const { state, dispatch } = useAppContext();
+
+  //columnas que va amostrar en la vista
   const columns = [
     {
       name: 'firstName',

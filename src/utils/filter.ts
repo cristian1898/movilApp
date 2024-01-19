@@ -11,12 +11,12 @@ export const searchField: SearchFieldFunction = (
   searchValue,
 ): boolean => {
   const values = Object.values(item);
-  const normalizedSearchValue = searchValue.toLowerCase();
+  const normalizedSearchValue = searchValue?.toLowerCase();
 
   return values.some(
     (value: any) =>
       typeof value === 'string' &&
-      value.toLowerCase().includes(normalizedSearchValue),
+      value?.toLowerCase().includes(normalizedSearchValue),
   );
 };
 

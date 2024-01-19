@@ -13,10 +13,8 @@ import {
 import { AuthorInterface } from '../interfaces/author';
 import { BookInterface } from '../interfaces/book';
 
-// State type
 type AppState = {
-  // Properties
-  // Ejemplo:
+  // Propiedades
   alert: IAppContextAlert | null;
   filter: IAppContextFilter | null;
   view: IAppContextActionView | null;
@@ -25,7 +23,7 @@ type AppState = {
   book: BookInterface | null;
 };
 
-// Type of actions
+// Type de acciones
 export type AppAction =
   | { type: 'SET_ALERT'; payload: IAppContextAlert }
   | { type: 'SET_VIEW'; payload: IAppContextActionView }
@@ -34,7 +32,7 @@ export type AppAction =
   | { type: 'SET_BOOK'; payload: BookInterface }
   | { type: 'SET_FILTER'; payload: IAppContextFilter };
 
-// Type of context
+// Typos del contexto
 type AppContextType = {
   state: AppState;
   dispatch: Dispatch<AppAction>;
@@ -43,7 +41,7 @@ type AppContextType = {
 // Create context inital
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Provider definition
+// Definicion del proveedor
 type AppContextProviderProps = { children: ReactNode };
 
 const initialState: AppState = {
@@ -96,7 +94,7 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({ children }) => 
   );
 };
 
-// Hook context for components
+// Hook componentes
 const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {

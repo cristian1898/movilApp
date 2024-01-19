@@ -92,8 +92,8 @@ const DetailComponentAuthor: React.FC<DetailComponentProps> = ({ url }) => {
 
         {/* Sección de Fecha de Publicación */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Fecha de alta:</Text>
-          <Text style={styles.details}>20-22</Text>
+          <Text style={styles.sectionTitle}>Fecha de ingreso:</Text>
+          <Text style={styles.details}>2022</Text>
 
           {/* Reemplaza con la fecha real */}
         </View>

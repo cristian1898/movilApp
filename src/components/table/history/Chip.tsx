@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 
@@ -8,6 +8,9 @@ const ChipHistory: React.FC<{
   const [newList, setNewList] = useState<string[]>(
     listHistory ? Array.from(new Set(listHistory)) : [],
   );
+  useEffect(() => {
+    setNewList(Array.from(new Set(listHistory)));
+  }, [listHistory]);
   return (
     <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>

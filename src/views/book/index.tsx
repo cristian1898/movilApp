@@ -16,8 +16,8 @@ const BookView = () => {
       displayName: 'titulo',
     },
     {
-      name: 'language',
-      displayName: 'Correo',
+      name: 'genere',
+      displayName: 'Genero',
     },
     {
       name: 'img',

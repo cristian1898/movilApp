@@ -96,28 +96,28 @@ const DetailComponentBook: React.FC<DetailComponentProps> = ({ url }) => {
 
         {/* Sección de Fecha de Publicación */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Fecha de alta:</Text>
+          <Text style={styles.sectionTitle}>Fecha de Publicación:</Text>
           <Text style={styles.details}>{book?.publicationYear}</Text>
         </View>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Detalles del libro:</Text>
-          <Text style={styles.details}>Genero:{book?.genere}</Text>
-          <Text style={styles.details}>Lenguaje:{book?.genere}</Text>
+          <Text style={styles.sectionTitle}>Detalles del Libro:</Text>
+          <Text style={styles.details}>Genero: {book?.genere}</Text>
+          <Text style={styles.details}>Lenguaje: {book?.language}</Text>
 
           <Text
             style={styles.details}
             style={{ color: 'blue' }}
             onPress={() => handleLinkPress(book?.url || '')}>
-            Url: link
+            Web: {''} {''} link
           </Text>
 
-          <Text style={styles.details}>Precio : ${book?.price}</Text>
+          <Text style={styles.details}>Precio : ${book?.price} $</Text>
         </View>
 
         {/* Sección de Detalles */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Detalles del Autor:</Text>
-          <Text style={styles.details}>Name: {book?.author}</Text>
+          <Text style={styles.details}>Nombre: {book?.author}</Text>
         </View>
       </View>
       {/* Botones de Acción */}

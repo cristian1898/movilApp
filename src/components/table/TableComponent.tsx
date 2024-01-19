@@ -59,6 +59,14 @@ const InitialComponentAppTable: React.FC<{
   }, []);
   const handleAddNew = () => {
     dispatch({
+      type: 'SET_AUTHOR',
+      payload: { author: null },
+    });
+    dispatch({
+      type: 'SET_BOOK',
+      payload: { book: null },
+    });
+    dispatch({
       type: 'SET_VIEW',
       payload: { type: ACTIONS.CREATE, url: url },
     });

@@ -6,7 +6,11 @@ import { BookInterface } from '../../interfaces/book';
 import { AuthorInterface } from '../../interfaces/author';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAppContext } from '../../context/AppContext';
-import { ACTIONS, ValidPrintForm } from '../../interfaces/globalInterface';
+import {
+  ACTIONS,
+  StaticsResponses,
+  ValidPrintForm,
+} from '../../interfaces/globalInterface';
 const ModalDetailComponent = ({
   closePreview,
   previewVisible,
@@ -68,7 +72,7 @@ const ModalDetailComponent = ({
               i.name === 'img' ? (
                 <Image
                   key={index}
-                  source={require('../../../assets/images/pizza_portuguesa.jpg')}
+                  source={{ uri: item.img || StaticsResponses.IMG }}
                   style={styles.cardImage}
                 />
               ) : (

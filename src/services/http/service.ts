@@ -5,6 +5,8 @@ import { AppAction, useAppContext } from '../../context/AppContext';
 import { Dispatch } from 'react';
 
 const API_BASE_URL = API_URL;
+
+// Handle manejador de errores
 const handleErrors = async (
   data: ResponseMethod,
   dispatch: Dispatch<AppAction>,
@@ -27,7 +29,7 @@ const handleErrors = async (
 
   return data;
 };
-
+//methodos crud reutilizables
 const performCrudOperation = async <T>(
   url: string,
   method: string,

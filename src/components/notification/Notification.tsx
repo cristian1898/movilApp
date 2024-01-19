@@ -26,9 +26,6 @@ const NotificationComponentApp = () => {
   }, [state.alert]);
   return (
     <View style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
-      {/*   <TouchableOpacity onPress={showSnackbar}> 
-        <Text>Mostrar Snackbar</Text>
-      </TouchableOpacity>*/}
       {alertObject && (
         <Snackbar
           visible={visible}
